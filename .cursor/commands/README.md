@@ -5,18 +5,55 @@ This directory contains custom Cursor commands that replicate the specialized ag
 ## Available Commands
 
 ### `/implement` - Full-Stack Developer Mode
-**Use when:** Building features, APIs, UI components, database operations
+**Use when:** Building features that span both frontend and backend
 
 **What it does:**
 - Loads project context from `.cursorrules` and `memory-bank/`
-- Implements features following project patterns
+- Implements full-stack features following project patterns
 - Ensures type safety, validation, error handling
 - Runs quality gates (typecheck, lint, test, build)
 - Updates documentation after changes
 
 **Example usage:**
 ```
-/implement Create a user authentication API with JWT tokens
+/implement Create a user authentication system with JWT tokens and login UI
+```
+
+---
+
+### `/frontend` - Frontend Developer Mode
+**Use when:** Building UI components, pages, state management, user interactions
+
+**What it does:**
+- Focuses on UI/UX implementation with React/Vue/Svelte
+- Implements responsive design and accessibility (WCAG)
+- Handles state management (React Query, Zustand, forms)
+- Optimizes performance (code splitting, memoization, virtual scrolling)
+- Ensures proper loading/error states
+- Tests component behavior and accessibility
+
+**Example usage:**
+```
+/frontend Create a responsive user profile component with form validation
+```
+
+---
+
+### `/backend` - Backend Developer Mode
+**Use when:** Building APIs, database schemas, authentication, background jobs
+
+**What it does:**
+- Focuses on API development with proper validation
+- Implements authentication/authorization (JWT, RBAC)
+- Designs database schemas and migrations
+- Optimizes queries and prevents N+1 problems
+- Implements caching strategies
+- Ensures security best practices
+- Tests business logic and integrations
+
+**Example usage:**
+```
+/backend Create a REST API for blog posts with pagination and role-based access
 ```
 
 ---
@@ -138,7 +175,9 @@ Cursor AI will:
 
 | Cursor Command | Claude Code Agent | Purpose |
 |----------------|-------------------|---------|
-| `/implement` | fullstack-developer | Feature implementation |
+| `/implement` | fullstack-developer | Full-stack feature implementation |
+| `/frontend` | frontend-developer | UI/UX implementation |
+| `/backend` | backend-developer | API/database implementation |
 | `/review` | principal-engineer | Code review & debugging |
 | `/test` | qa-engineer | Testing & QA |
 | `/design` | uiux-designer | UI/UX review |
@@ -191,16 +230,19 @@ After using commands, update your memory bank:
 2. /architect
    "Design the shopping cart data model and API structure"
 
-3. /implement
+3. /backend
    "Build the shopping cart API endpoints and database schema"
 
-4. /test
+4. /frontend
+   "Build the shopping cart UI with add/remove items functionality"
+
+5. /test
    "Create comprehensive tests for the shopping cart functionality"
 
-5. /review
+6. /review
    "Review the shopping cart implementation for performance issues"
 
-6. /design
+7. /design
    "Review the shopping cart UI for accessibility and usability"
 ```
 

@@ -31,10 +31,15 @@ This ensures you use correct:
 5. Optimize database queries
 6. Implement proper error handling and logging
 
-### Frontend Development
-1. Build responsive web applications
+### Frontend Development (Atomic Design Pattern)
+1. Build responsive web applications using Atomic Design
 2. Implement state management
-3. Create reusable UI components
+3. Create reusable UI components following hierarchy:
+   - **Atoms**: Basic building blocks (Button, Input, Icon)
+   - **Molecules**: Simple groups (FormField, SearchBox)
+   - **Organisms**: Complex sections (Navbar, ProductCard)
+   - **Templates**: Page layouts (DashboardTemplate)
+   - **Pages**: Complete instances (HomePage)
 4. Handle forms and validation
 5. Optimize performance (code splitting, lazy loading)
 6. Implement proper loading and error states
@@ -64,6 +69,9 @@ cat package.json  # or pyproject.toml, go.mod, Cargo.toml
 ls src/
 ls src/routes/ src/api/ src/services/
 
+# Check Atomic Design structure (frontend)
+ls src/components/atoms/ src/components/molecules/ src/components/organisms/ 2>/dev/null || echo "Atomic structure not yet created"
+
 # Check dependencies
 cat package.json | grep dependencies
 ```
@@ -84,11 +92,13 @@ cat package.json | grep dependencies
 - [ ] Proper HTTP status codes
 
 **Frontend Checklist:**
+- [ ] Components follow Atomic Design pattern
 - [ ] Loading states
 - [ ] Error handling and display
 - [ ] Form validation
 - [ ] Responsive design
-- [ ] Accessibility basics
+- [ ] Accessibility basics (WCAG, ARIA, keyboard nav)
+- [ ] Proper component hierarchy (atoms → molecules → organisms → templates → pages)
 
 **Full-Stack Checklist:**
 - [ ] Type safety end-to-end

@@ -46,41 +46,160 @@
 
 ## Core Design Patterns
 
-### Pattern 1: [Pattern Name]
-**Usage:** [Where/when we use this]
+### Pattern 1: Atomic Design (Frontend)
+**Usage:** All frontend component development follows Atomic Design methodology
+
+**Structure:**
+```
+components/
+├── atoms/         # Basic building blocks (Button, Input, Icon)
+├── molecules/     # Simple groups (FormField, SearchBox)
+├── organisms/     # Complex sections (Navbar, ProductCard)
+├── templates/     # Page layouts (DashboardTemplate)
+└── pages/         # Complete instances (HomePage)
+```
+
+**Component Hierarchy:**
+```
+Pages (real data)
+  ↓ uses
+Templates (layout structure)
+  ↓ uses
+Organisms (feature sections)
+  ↓ uses
+Molecules (component groups)
+  ↓ uses
+Atoms (basic elements)
+```
 
 **Example:**
-```{{LANGUAGE}}
-[Code example showing the pattern]
+```typescript
+// Atom: components/atoms/Button/Button.tsx
+export function Button({ variant, children, onClick }: ButtonProps) {
+  return <button className={`btn-${variant}`} onClick={onClick}>{children}</button>;
+}
+
+// Molecule: components/molecules/FormField/FormField.tsx
+import { Label } from '@/components/atoms/Label';
+import { Input } from '@/components/atoms/Input';
+
+export function FormField({ label, value, onChange }: FormFieldProps) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Input value={value} onChange={onChange} />
+    </div>
+  );
+}
+
+// Organism: components/organisms/LoginForm/LoginForm.tsx
+import { FormField } from '@/components/molecules/FormField';
+import { Button } from '@/components/atoms/Button';
+
+export function LoginForm({ onSubmit }: LoginFormProps) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
+  return (
+    <form onSubmit={onSubmit}>
+      <FormField label="Email" value={email} onChange={setEmail} />
+      <FormField label="Password" value={password} onChange={setPassword} />
+      <Button variant="primary">Login</Button>
+    </form>
+  );
+}
 ```
 
 **Benefits:**
-- [Benefit 1]
-- [Benefit 2]
+- Clear component hierarchy and organization
+- Highly reusable components
+- Consistent design system
+- Easier maintenance and testing
+- Better team collaboration
+- Scalable architecture
 
-### Pattern 2: [Pattern Name]
-**Usage:** [Where/when we use this]
+**Rules:**
+- Atoms: No dependencies, pure presentation
+- Molecules: Combine 2-4 atoms, simple logic
+- Organisms: Complex logic, data fetching allowed
+- Templates: Define layout structure only
+- Pages: Real data and routing
+
+### Pattern 2: Repository Pattern (Backend)
+**Usage:** Data access layer for all database operations
 
 **Example:**
-```{{LANGUAGE}}
-[Code example showing the pattern]
+```typescript
+// Repository: Encapsulate data access
+export class UserRepository {
+  async findById(id: string): Promise<User | null> {
+    return db.select().from(users).where(eq(users.id, id)).limit(1);
+  }
+  
+  async create(data: CreateUserData): Promise<User> {
+    return db.insert(users).values(data).returning();
+  }
+}
+
+// Service: Business logic using repository
+export class UserService {
+  constructor(private userRepo: UserRepository) {}
+  
+  async register(data: RegisterData): Promise<User> {
+    const exists = await this.userRepo.findByEmail(data.email);
+    if (exists) throw new Error('Email already registered');
+    
+    return this.userRepo.create(data);
+  }
+}
 ```
 
 **Benefits:**
-- [Benefit 1]
-- [Benefit 2]
+- Separation of concerns
+- Easier testing with mocks
+- Centralized data access logic
+- Database abstraction
 
-### Pattern 3: [Pattern Name]
-**Usage:** [Where/when we use this]
+### Pattern 3: Service Layer (Backend)
+**Usage:** Business logic layer between controllers and repositories
 
 **Example:**
-```{{LANGUAGE}}
-[Code example showing the pattern]
+```typescript
+// Controller/Route Handler
+app.post('/users', async (c) => {
+  const data = await c.req.json();
+  const user = await userService.create(data);
+  return c.json(user, 201);
+});
+
+// Service Layer
+export class UserService {
+  async create(data: CreateUserData): Promise<User> {
+    // Validation
+    await this.validate(data);
+    
+    // Business logic
+    const hashedPassword = await hash(data.password);
+    
+    // Repository call
+    const user = await this.userRepo.create({
+      ...data,
+      password: hashedPassword
+    });
+    
+    // Side effects
+    await this.emailService.sendWelcome(user);
+    
+    return user;
+  }
+}
 ```
 
 **Benefits:**
-- [Benefit 1]
-- [Benefit 2]
+- Clean separation of concerns
+- Testable business logic
+- Reusable across endpoints
+- Centralized validation
 
 ---
 
