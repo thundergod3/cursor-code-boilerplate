@@ -1,0 +1,620 @@
+# Cursor AI Coding Standards & Best Practices
+
+**Version:** {{VERSION}}
+**Last Updated:** {{DATE}}
+**Architecture:** {{ARCHITECTURE_TYPE}}
+
+---
+
+## Quick Start
+
+1. Copy this file to your project root as `.cursorrules`
+2. Replace all `{{PLACEHOLDER}}` values with your project specifics
+3. Delete language/framework sections that don't apply to your stack
+4. Customize patterns based on your team's preferences
+5. Create `memory-bank/` directory for project documentation
+
+---
+
+## Project Configuration
+
+<!-- Fill these values to customize this template -->
+
+| Setting | Value | Options |
+|---------|-------|---------|
+| **Language** | `{{LANGUAGE}}` | TypeScript, JavaScript, Python, Go, Rust |
+| **Package Manager** | `{{PACKAGE_MANAGER}}` | pnpm, bun, npm, yarn, pip, poetry, cargo, go mod |
+| **Backend Framework** | `{{BACKEND_FRAMEWORK}}` | Hono, Elysia, Express, Fastify, FastAPI, Gin, Axum |
+| **Frontend Framework** | `{{FRONTEND_FRAMEWORK}}` | React, Vue, Svelte, Solid, None |
+| **Database/ORM** | `{{DATABASE_ORM}}` | Drizzle, Prisma, SQLAlchemy, GORM, Diesel |
+| **Testing Framework** | `{{TESTING_FRAMEWORK}}` | Vitest, Jest, pytest, go test, cargo test |
+| **Linter/Formatter** | `{{LINTER_FORMATTER}}` | Biome, ESLint+Prettier, Ruff, golangci-lint, rustfmt |
+
+---
+
+## Memory Bank Integration
+
+This project uses the Memory Bank system for documentation. Before ANY task:
+1. Read `memory-bank/projectbrief.md` - Project foundation
+2. Read `memory-bank/activeContext.md` - Current work context
+3. Read `memory-bank/systemPatterns.md` - Architecture patterns
+4. Read `memory-bank/techContext.md` - Technical setup
+5. Read `memory-bank/progress.md` - Current status
+
+**Update memory-bank files after EVERY significant change.**
+
+---
+
+## Technology Selection Guidelines
+
+### Selection Criteria
+
+| Priority | Criteria | Description |
+|----------|----------|-------------|
+| 1 | **Recency** | Prefer technologies released/updated within last 3 years |
+| 2 | **Active Maintenance** | Active development, regular releases, responsive maintainers |
+| 3 | **Community Adoption** | Growing community, good documentation, ecosystem support |
+| 4 | **Type Safety** | First-class type support (TypeScript, type hints, generics) |
+| 5 | **Performance** | Modern optimizations (tree-shaking, lazy loading, async) |
+
+### Technology Evaluation Checklist
+
+Before adopting any new technology:
+
+- [ ] **Release Date**: From the last 3 years?
+- [ ] **Last Update**: Updated within last 6 months?
+- [ ] **Community Activity**: Growing or stable community?
+- [ ] **Type Support**: Native types or excellent definitions?
+- [ ] **Bundle/Binary Size**: Optimized for production?
+- [ ] **Breaking Changes**: Stable API with clear migration paths?
+
+### Preferred Modern Stack by Language
+
+#### TypeScript/JavaScript (2023-2025)
+
+| Category | Preferred | Avoid |
+|----------|-----------|-------|
+| Runtime | Bun, Deno, Node 20+ | Node < 18 |
+| Backend | Hono, Elysia, Fastify | Express (legacy) |
+| Frontend | React 18+, Solid, Svelte 5 | React < 17 |
+| Meta Framework | TanStack Start, Next 14+, Nuxt 3 | CRA, Next < 13 |
+| ORM | Drizzle, Prisma 5+ | Sequelize, TypeORM |
+| Validation | Zod, Valibot | Joi, Yup |
+| Testing | Vitest, Playwright | Jest (prefer Vitest) |
+| Build | Vite, Turbopack, Rsbuild | Webpack |
+| Package Manager | pnpm, Bun | npm, Yarn Classic |
+
+#### Python (2023-2025)
+
+| Category | Preferred | Avoid |
+|----------|-----------|-------|
+| Runtime | Python 3.11+ | Python < 3.9 |
+| Backend | FastAPI, Litestar | Flask, Django (for APIs) |
+| Async | asyncio, HTTPX | requests (sync only) |
+| ORM | SQLAlchemy 2.0, SQLModel | SQLAlchemy < 2.0 |
+| Validation | Pydantic v2 | Pydantic v1 |
+| Testing | pytest, pytest-asyncio | unittest |
+| Linting | Ruff, mypy | flake8, pylint |
+| Package Manager | uv, poetry, pdm | pip alone |
+
+#### Go (2023-2025)
+
+| Category | Preferred | Avoid |
+|----------|-----------|-------|
+| Runtime | Go 1.21+ | Go < 1.18 |
+| Backend | Gin, Echo, Fiber | net/http alone |
+| ORM | GORM, sqlc, Ent | raw SQL everywhere |
+| Validation | go-playground/validator | manual validation |
+| Testing | testify, gomock | testing alone |
+| Linting | golangci-lint | golint (deprecated) |
+
+#### Rust (2023-2025)
+
+| Category | Preferred | Avoid |
+|----------|-----------|-------|
+| Runtime | Rust 1.70+ | Rust < 1.60 |
+| Backend | Axum, Actix-web 4 | Rocket (older) |
+| Async | Tokio | async-std |
+| ORM | SeaORM, Diesel | raw SQL |
+| Serialization | serde | manual parsing |
+| Testing | cargo test, mockall | - |
+| Linting | clippy, rustfmt | - |
+
+---
+
+## Naming Conventions
+
+### Files and Directories
+
+| Type | Convention | Example |
+|------|------------|---------|
+| General files | `kebab-case` | `user-service.ts`, `api_client.py` |
+| Components (React/Vue) | `PascalCase` | `UserCard.tsx`, `UserCard.vue` |
+| Classes | `PascalCase` | `UserService.ts`, `user_service.py` |
+| Entry points | `index.*` / `main.*` | `index.ts`, `main.py`, `main.go` |
+| Tests | `*.test.*` / `*_test.*` | `user.test.ts`, `user_test.go` |
+| Directories | `kebab-case` | `user-management/`, `api-routes/` |
+
+### Variables and Functions
+
+| Language | Variables | Constants | Functions |
+|----------|-----------|-----------|-----------|
+| TypeScript/JS | `camelCase` | `SCREAMING_SNAKE` | `camelCase` |
+| Python | `snake_case` | `SCREAMING_SNAKE` | `snake_case` |
+| Go (exported) | `PascalCase` | `PascalCase` | `PascalCase` |
+| Go (unexported) | `camelCase` | `camelCase` | `camelCase` |
+| Rust | `snake_case` | `SCREAMING_SNAKE` | `snake_case` |
+
+### Function Naming Prefixes
+
+| Prefix | Usage | Example |
+|--------|-------|---------|
+| `get` | Retrieve data | `getUserById()` |
+| `set` | Set/assign value | `setUserName()` |
+| `fetch` | API/network call | `fetchUserData()` |
+| `create` | Create new entity | `createUser()` |
+| `update` | Modify existing | `updateOrder()` |
+| `delete` | Remove entity | `deleteRecord()` |
+| `validate` | Validation logic | `validateInput()` |
+| `handle` | Event handlers | `handleSubmit()` |
+| `is/has/can` | Boolean checks | `isValid()`, `hasPermission()` |
+| `use` | React hooks | `useAuth()`, `useQuery()` |
+
+### Database Naming
+
+| Element | Convention | Example |
+|---------|------------|---------|
+| Tables | `snake_case` (plural) | `users`, `order_items` |
+| Columns | `snake_case` | `created_at`, `user_id` |
+| Primary keys | `id` or `{table}_id` | `id`, `user_id` |
+| Foreign keys | `{referenced_table}_id` | `user_id`, `order_id` |
+| Indexes | `{table}_{column}_idx` | `users_email_idx` |
+
+---
+
+## Language-Specific Standards
+
+### TypeScript
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmitOnError": true
+  }
+}
+```
+
+**Rules:**
+- Always use `strict: true`
+- Prefer `type` over `interface` (unless extending)
+- Never use `any` - use `unknown` with type guards
+- Use Zod for runtime validation
+
+### Python
+
+```toml
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+```
+
+**Rules:**
+- Use type hints everywhere
+- Use Pydantic for data validation
+- Use `async/await` for I/O operations
+
+### Go
+
+**Rules:**
+- Use `gofmt` / `goimports` for formatting
+- Export only what's necessary (PascalCase)
+- Handle errors explicitly - never ignore with `_`
+- Use context for cancellation
+
+### Rust
+
+**Rules:**
+- Use `clippy` for linting
+- Use `rustfmt` for formatting
+- Prefer `Result<T, E>` over panics
+- Use `?` operator for error propagation
+
+---
+
+## SOLID Principles
+
+### Single Responsibility (SRP)
+Each module/class should have only ONE reason to change.
+
+### Open/Closed (OCP)
+Open for extension, closed for modification.
+
+### Liskov Substitution (LSP)
+Subtypes must be substitutable for their base types.
+
+### Interface Segregation (ISP)
+Clients should not depend on interfaces they don't use.
+
+### Dependency Inversion (DIP)
+Depend on abstractions, not concretions.
+
+| Principle | Violation Sign |
+|-----------|----------------|
+| **SRP** | Class/function does too many things |
+| **OCP** | Adding feature requires changing existing code |
+| **LSP** | Subclass throws unexpected errors |
+| **ISP** | Implementing unused methods |
+| **DIP** | Using `new` directly in business logic |
+
+---
+
+## Security Best Practices
+
+### Input Validation
+
+**Always validate all user input:**
+
+```typescript
+// TypeScript - Zod
+const userSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+});
+```
+
+```python
+# Python - Pydantic
+class UserInput(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=100)
+```
+
+### Environment Variables
+
+```typescript
+// Validate env vars at startup
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  API_KEY: z.string().min(1),
+});
+const env = envSchema.parse(process.env);
+```
+
+**.gitignore:**
+```
+.env
+.env.*
+!.env.example
+```
+
+### SQL Injection Prevention
+
+**Always use parameterized queries:**
+
+```typescript
+// ✅ SAFE
+const user = await db.select().from(users).where(eq(users.email, userInput));
+
+// ❌ UNSAFE
+const user = await db.execute(`SELECT * FROM users WHERE email = '${userInput}'`);
+```
+
+---
+
+## Error Handling
+
+### Backend
+
+```typescript
+// TypeScript
+app.get("/users/:id", async (c) => {
+  try {
+    const user = await getUserById(c.req.param("id"));
+    if (!user) return c.json({ error: "Not found" }, 404);
+    return c.json(user);
+  } catch (error) {
+    console.error("Error:", error);
+    return c.json({ error: "Internal server error" }, 500);
+  }
+});
+```
+
+```python
+# Python
+@app.get("/users/{user_id}")
+async def get_user(user_id: str):
+    try:
+        user = await db.get_user(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="Not found")
+        return user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal error")
+```
+
+### Frontend
+
+```typescript
+function UserProfile({ id }: { id: string }) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => api.users.get(id),
+  });
+
+  if (isLoading) return <Spinner />;
+  if (error) return <ErrorMessage message={error.message} />;
+  if (!data) return <NotFound />;
+
+  return <UserCard user={data} />;
+}
+```
+
+---
+
+## Testing Standards
+
+### Test-Driven Development (TDD) - MANDATORY
+
+```
+┌─────────────────────────────────────────────┐
+│                TDD CYCLE                    │
+│    ┌─────────┐                              │
+│    │   RED   │  Write failing test          │
+│    └────┬────┘                              │
+│         ▼                                   │
+│    ┌─────────┐                              │
+│    │  GREEN  │  Write minimum code to pass  │
+│    └────┬────┘                              │
+│         ▼                                   │
+│    ┌─────────┐                              │
+│    │REFACTOR │  Improve code quality        │
+│    └────┬────┘                              │
+│         └──────────► Repeat                 │
+└─────────────────────────────────────────────┘
+```
+
+### Coverage Requirements
+
+| Metric | Minimum | Target |
+|--------|---------|--------|
+| Statements | 80% | 90% |
+| Branches | 75% | 85% |
+| Functions | 80% | 90% |
+| Lines | 80% | 90% |
+
+### Test Examples by Language
+
+**TypeScript (Vitest):**
+```typescript
+import { describe, it, expect } from "vitest";
+
+describe("UserService", () => {
+  it("should create user with valid data", async () => {
+    const data = { name: "John", email: "john@example.com" };
+    const result = await createUser(data);
+    expect(result).toMatchObject(data);
+  });
+});
+```
+
+**Python (pytest):**
+```python
+import pytest
+
+async def test_create_user_success():
+    data = {"name": "John", "email": "john@example.com"}
+    result = await create_user(data)
+    assert result["name"] == data["name"]
+```
+
+**Go:**
+```go
+func TestCreateUser(t *testing.T) {
+    data := User{Name: "John", Email: "john@example.com"}
+    result, err := CreateUser(db, &data)
+    assert.NoError(t, err)
+    assert.Equal(t, data.Name, result.Name)
+}
+```
+
+**Rust:**
+```rust
+#[tokio::test]
+async fn test_create_user_success() {
+    let data = CreateUser { name: "John".into(), email: "john@example.com".into() };
+    let result = create_user(&db, data).await.unwrap();
+    assert_eq!(result.name, "John");
+}
+```
+
+---
+
+## Performance Guidelines
+
+### Database Optimization
+
+- Add indexes for frequently queried columns
+- Avoid N+1 queries (use joins or batch loading)
+- Use pagination for large datasets
+- Cache frequently accessed data
+
+### Frontend Optimization
+
+```typescript
+// Memoize expensive computations
+const processedData = useMemo(() => expensiveOperation(data), [data]);
+
+// Memoize callbacks
+const handleClick = useCallback(() => doSomething(id), [id]);
+
+// Code splitting
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
+```
+
+---
+
+## Documentation Standards
+
+### Code Comments
+
+```typescript
+// ❌ BAD: Obvious
+counter++;  // Increment counter
+
+// ✅ GOOD: Explains why
+// Use ceiling to ensure at least 1 page even for 0 items
+const pageCount = Math.ceil(total / pageSize) || 1;
+```
+
+### Function Documentation
+
+```typescript
+/**
+ * Calculates total price including tax.
+ * @param basePrice - Base price before tax
+ * @param taxRate - Tax rate as decimal (e.g., 0.1 for 10%)
+ * @returns Total price with tax
+ * @throws {Error} If values are negative
+ */
+function calculateTotal(basePrice: number, taxRate: number): number {
+  // ...
+}
+```
+
+---
+
+## Git Workflow
+
+### Branch Strategy
+
+**MANDATORY: Create feature branch before implementing ANY issue.**
+
+```bash
+git checkout main && git pull
+git checkout -b feature/issue-{number}-{description}
+# ... implement ...
+git commit -m "feat(scope): description"
+git push origin feature/issue-{number}-{description}
+# Create PR
+```
+
+### Branch Naming
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| Feature | `feature/issue-{n}-{desc}` | `feature/issue-123-user-auth` |
+| Bug fix | `fix/issue-{n}-{desc}` | `fix/issue-456-login-error` |
+| Hotfix | `hotfix/{desc}` | `hotfix/security-patch` |
+
+### Protected Branches
+
+| Branch | Direct Commits | Status |
+|--------|----------------|--------|
+| `main` | **NEVER** | Production |
+| `develop` | **NEVER** | Integration |
+| `feature/*` | YES | Working branch |
+
+### Commit Messages (Conventional Commits)
+
+```bash
+<type>(<scope>): <subject>
+
+# Types: feat, fix, refactor, chore, docs, test, perf
+# Examples:
+git commit -m "feat(auth): add JWT refresh token"
+git commit -m "fix(api): handle null response"
+```
+
+### Pre-Commit Quality Gates
+
+```bash
+{{PACKAGE_MANAGER}} typecheck   # Type checking
+{{PACKAGE_MANAGER}} lint        # Linting
+{{PACKAGE_MANAGER}} test        # Tests
+{{PACKAGE_MANAGER}} build       # Build verification
+```
+
+---
+
+## Cursor-Specific Workflows
+
+### Before ANY Implementation
+
+1. Read ALL memory-bank files
+2. Check existing patterns in codebase
+3. Review related files
+4. Plan approach
+5. Implement following established patterns
+
+### After EVERY Significant Change
+
+1. Update `memory-bank/activeContext.md` with changes
+2. Update `memory-bank/progress.md` with status
+3. Update other memory-bank files as needed
+4. Update this `.cursorrules` file if new patterns discovered
+5. Run quality gates (typecheck, lint, test, build)
+
+### Task Breakdown Rules
+
+- **Single Responsibility**: Each task does ONE thing only
+- **Atomic Changes**: Task completed in a single commit/PR
+- **Clear Scope**: No ambiguity about what's included
+- **Testable**: Clear acceptance criteria
+- **Time-Bounded**: Completable in 1-4 hours
+
+### Quality Gates: NEVER Skip
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  QUALITY GATES - NEVER SKIP OR BYPASS                       │
+│                                                             │
+│  Every commit MUST pass:                                    │
+│  1. Type checking (typecheck)                               │
+│  2. Linting (lint)                                          │
+│  3. Tests (test)                                            │
+│  4. Build (build)                                           │
+│                                                             │
+│  ✗ "It's just a docs change" → Still run quality gates      │
+│  ✗ "Using --no-verify" → PROHIBITED                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Summary Checklist
+
+### Before Committing
+
+- [ ] All quality gates pass (typecheck, lint, test, build)
+- [ ] No hardcoded secrets
+- [ ] Error handling in place
+- [ ] Tests cover new functionality
+- [ ] Memory bank updated
+
+### Code Review Checklist
+
+- [ ] Follows naming conventions
+- [ ] Input validation present
+- [ ] Error handling implemented
+- [ ] No type safety violations
+- [ ] Database queries optimized
+- [ ] Security best practices followed
+- [ ] Documentation updated if needed
+
+---
+
+**End of Document**
+
+*This is a Cursor-adapted version of universal coding standards. Replace `{{PLACEHOLDERS}}` and customize for your project.*
+
+
